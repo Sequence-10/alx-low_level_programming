@@ -16,14 +16,13 @@ int main(void)
 			putchar(a);
 			putchar(b);
 
-			if (a != 58 || b != 58)
+			if (a != 56 || b != 57)
 			{
 				putchar(',');
 				putchar(' ');
 			}
 		}
 	}
-	putchar('\n');
 
 		return (0);
 }
