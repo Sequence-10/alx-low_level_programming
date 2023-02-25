@@ -1,6 +1,7 @@
-#include <stdio.h>
+#include "main.h"
+
 /**
- * main - fizz buzz
+ * main - fizz buzz game
  * Return: success
  */
 
@@ -22,22 +23,18 @@ int main(void)
 			}
 			else
 			{
-				printf("Buzz")
-					else
-					{
-						printf("Buzz");
-					}
-			}
-			else if (i % 3 == 0)
-			{
-				printf("Fizz ");
-			}
-			else
-			{
-				printf("%d ", i);
+				printf("Buzz");
 			}
 		}
-		printf("\n");
-
-		return (0);
+		else if (i % 3 == 0)
+		{
+			printf("Fizz ");
+		}
+		else
+		{
+			printf("%d ", i);
+		}
+	}
+	printf("\n");
+	return (0);
 }
