@@ -1,7 +1,6 @@
 #include "main.h"
 /**
-
- * print_triangle - this function ptints a triangle
+* print_triangle - this function ptints a triangle
 * @size: parameter needed
 * Return: 0
 */
@@ -23,8 +22,8 @@ void print_triangle(int size)
 				{
 					_putchar('#');
 				}
+				n--;
 			}
-			n--;
 			_putchar('\n');
 		}
 	}
