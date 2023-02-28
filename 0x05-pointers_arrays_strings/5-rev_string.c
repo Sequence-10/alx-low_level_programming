@@ -7,17 +7,17 @@
 
 void rev_string(char *s)
 {
-	int bob;
-	int pok;
-	char tok[20];
+	int a;
+	int b;
+	char c[50];
 
-	bob = strlen(s);
-	for (pok = bob; pok > 0; pok--)
+	b = strlen(s);
+	for (a = b; a > 0; a--)
 	{
-		tok[bob - pok] = s[pok - bob];
+		c[b - a] = s[a - b];
 	}
-	for (pok = 0; pok < bob; pok++)
+	for (a = 0; a < b; a++)
 	{
-		s[pok] = tok[pok];
+		s[a] = c[a];
 	}
 }
