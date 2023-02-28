@@ -1,4 +1,4 @@
-#inclide "main.h"
+#include "main.h"
 /**
  * rev_string - function that reverses
  * @s: pointer
