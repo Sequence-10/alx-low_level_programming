@@ -7,5 +7,7 @@
 
 int _strlen(char *s)
 {
+	char a[];
+
 	strlen(s);
 }
