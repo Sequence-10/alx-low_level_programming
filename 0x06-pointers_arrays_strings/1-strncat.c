@@ -4,6 +4,7 @@ include "main.h"
  * _strcat - function to concatenate
  * @dest: holds the first word to be concatenated
  * @src: the concatenated word
+ * @n: variables for them
  * Return: success
  */
 
