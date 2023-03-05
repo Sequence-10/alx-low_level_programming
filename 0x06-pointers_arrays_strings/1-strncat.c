@@ -1,14 +1,14 @@
-include "main.h"
+#include "main.h"
 
 /**
- * _strcat - function to concatenate
+ * _strncat - function to concatenate
  * @dest: holds the first word to be concatenated
  * @src: the concatenated word
  * @n: variables for them
  * Return: success
  */
 
-char *_strcat(char *dest, char *src, int n)
+char *_strncat(char *dest, char *src, int n)
 {
 	int a = 0;
 	int b = 0;
@@ -17,9 +17,10 @@ char *_strcat(char *dest, char *src, int n)
 	{
 		a++;
 	}
-	while (b < n &&  src[b] != '\0'; b++)
+	while (b < n &&  src[b] != '\0')
 	{
 		dest[a] = src[b];
+		b++;
 		a++;
 	}
 	dest[a] = '\0';
