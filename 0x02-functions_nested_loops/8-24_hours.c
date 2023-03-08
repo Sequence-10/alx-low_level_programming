@@ -1,28 +1,32 @@
 #include "main.h"
-
 /**
- * Jack_bauer - function that prints the time 
+ * jack_bauer - print every munites of the day
  * Return: success
  */
 
-void jack_bauer(void);
+void jack_bauer(void)
 {
-	int a, b;
+	int i, j, k, l;
 
-	a = 0;
-	while (a < 24)
+	for (i = 0; i <= 2; i++)
 	{
-		b = 0;
-		while (b < 60)
+		for (j = 0; j <= 9; j++)
 		{
-			_putchar((a / 10) + '0');
-			_putchar((a % 10) + '0');
-			_putchar(':');
-			_putchar((b / 10) + '0');
-			_putchar((b % 10) + '0');
-			_putchar('\n');
-			b++;
+			if ((i <= 1 && j <= 9) || (i <= 2 && j <= 3))
+			{
+				for (k = 0; k <= 5; k++)
+				{
+					for (l = 0; l <= 9; l++)
+					{
+						_putchar(i + '0');
+						_putchar(j + '0');
+						_putchar(58);
+						_putchar(k + '0');
+						_putchar(l + '0');
+						_putchar('\n');
+					}
+				}
+			}
 		}
-		a++;
 	}
 }
