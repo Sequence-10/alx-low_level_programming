@@ -6,30 +6,31 @@
 
 void time_table(void)
 {
-	int a, b, c;
+	int i, j, k, l, m;
 
-	for (a = 0; a < 10; a++)
+	for (i = 0; i <= 9; i++)
 	{
-		for (b = 0; b < 10; b++)
+		for (j = 0; j <= 9; j++)
 		{
-			c = b * a;
-			if (b == 0)
+			k = i * j;
+			if (k > 0)
 			{
-				_putchar(c + '0');
+				l = k % 10;
+				m = ((k - l) / 10);
+				_putchar(44);
+				_putchar(32);
+				_putchar(m + '0');
+				_putchar(l + '0');
 			}
-			if (c < 10 && b != 0)
+			else
 			{
-				_putchar(',');
-				_putchar(' ');
-				_putchar(' ');
-				_putchar(c + '0');
-			}
-			else if (c >= 10)
-			{
-				_putchar(',');
-				_putchar(' ');
-				_putchar((c / 10) + '0');
-				_putchar((c % 10) + '0');
+				if (j != 0)
+				{
+					_putchar(44);
+					_putchar(32);
+					_putchar(32);
+				}
+				_putchar(k + '0');
 			}
 		}
 		_putchar('\n');
