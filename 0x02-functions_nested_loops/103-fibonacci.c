@@ -1,4 +1,4 @@
-#include "main.h"
+#include <stdio.h>
 /**
  * main - print fibonacci
  * Return: success
@@ -17,9 +17,9 @@ int main(void)
 		{
 			sum += k;
 			j = k - j;
+			++i
 		}
-		++i;
+		printf("%ld\n", sum);
+		return (0);
 	}
-	printf("%ld\n", sum);
-	return (0);
 }
