@@ -17,9 +17,9 @@ int main(void)
 		{
 			sum += k;
 			j = k - j;
-			++i
+			++i;
 		}
 		printf("%ld\n", sum);
-		return (0);
 	}
+	return (0);
 }
