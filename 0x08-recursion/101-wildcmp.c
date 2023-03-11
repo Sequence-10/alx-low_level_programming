@@ -1,4 +1,4 @@
-#include "Main.h"
+#include "main.h"
 /**
  * wildcmp - compute it for me
  * @s1: hold the first one
