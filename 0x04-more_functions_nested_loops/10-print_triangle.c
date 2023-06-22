@@ -1,6 +1,6 @@
-include "main.h"
+#include "main.h"
 /**
- * print_triangle - this function ptints a triangle
+ * print_triangle - this function prints a triangle
  * @size: parameter needed
  * Return: 0
  */
