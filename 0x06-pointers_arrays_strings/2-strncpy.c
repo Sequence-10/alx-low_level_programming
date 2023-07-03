@@ -13,6 +13,10 @@ char *_strncpy(char *dest, char *src, int n)
 	int a;
 	int b;
 
+	for (b = 0; src[b] != '\0'; b++)
+	{
+		;
+	}
 	for (a = 0; dest[a] != '\0'; a++)
 	{
 		if (n < b)
@@ -33,10 +37,6 @@ char *_strncpy(char *dest, char *src, int n)
 				dest[a] = '\0';
 			}
 		}
-	}
-	for (b = 0; src[b] != '\0'; b++)
-	{
-		;
 	}
 	dest[a] = '\0';
 	return (dest);
