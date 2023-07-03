@@ -8,7 +8,7 @@
  * Return: success
  */
 
-char *_strncat(char *dest, char *src. int n)
+char *_strncat(char *dest, char *src, int n)
 {
 	int a = 0;
 	int b = 0;
