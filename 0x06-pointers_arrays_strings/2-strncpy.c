@@ -1,5 +1,4 @@
 #include "main.h"
-  
 /**
  * _strncpy - function to copy
  * @dest: word to copy
@@ -32,7 +31,7 @@ char *_strncpy(char *dest, char *src, int n)
 			{
 				dest[a] = src[a];
 			}
-			else if(a < n)
+			else if (a < n)
 			{
 				dest[a] = '\0';
 			}
