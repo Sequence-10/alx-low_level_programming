@@ -1,26 +1,28 @@
 #include <stdio.h>
 /**
- * main - print fibonacci
- * Return: success
- */
-
+* main - Program prints digits only using putchar and ascii tables
+*
+* Description: Program prints digits using putchar and ascii tables
+*
+* Return: 0 if execution has no errors
+*/
 int main(void)
 {
-	int i = 0;
-	long j = 1;
-	long k = 2, sum = k;
+	unsigned long t1, t2, nextTerm, sum;
 
-	while (k + j < 4000000)
+	t1 = 1;
+	t2 = 2;
+	nextTerm = t1 + t2;
+	sum = 2;
+
+	while (nextTerm <= 4000000)
 	{
-		k += j;
-		if (k % 2 == 0)
-		{
-			sum += k;
-			j = k - j;
-		}
-		++i;
+		if (nextTerm % 2 == 0)
+			sum += nextTerm;
+		t1 = t2;
+		t2 = nextTerm;
+		nextTerm = t1 + t2;
 	}
-	printf("%ld\n", sum);
+	printf("%lu\n", sum);
 	return (0);
 }
-
