@@ -1,22 +1,33 @@
 #include "main.h"
+
 /**
- * print_number - function to print integers
- * @n: record
- * return: Success
+ * print_number - function that prints an integer.
+ *
+ * Description: function that prints an integer.
+ *
+ * @n: Integer to print
+ *
+ * Return: returns integer
  */
 
 void print_number(int n)
 {
-	unsigned int i = n;
+	unsigned int absolute_n;
 
 	if (n < 0)
 	{
+		absolute_n = -n;
 		_putchar(45);
-		i = -i;
 	}
-	if (i / 10)
+	else
 	{
-		print_number(i / 10);
+		absolute_n = n;
 	}
-	_putchar(i % 10 + '0');
+
+	if (absolute_n / 10)
+	{
+		print_number(absolute_n / 10);
+	}
+
+	_putchar((absolute_n % 10) + 48);
 }
