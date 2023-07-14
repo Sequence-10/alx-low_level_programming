@@ -4,7 +4,7 @@
  * @s1: container for the first input
  * @s2: container for the second input
  * @n: variable handler
- * Return: Success as always
+ * Return: success as always
  */
 
 char *string_nconcat(char *s1, char *s2, unsigned int n)
@@ -13,9 +13,9 @@ char *string_nconcat(char *s1, char *s2, unsigned int n)
 	unsigned int len1 = 0, len2 = 0, i = 0, j = 0;
 
 	if (s1 == NULL)
-		s1 == "";
+		s1 = "";
 	if (s2 == NULL)
-		s2 == "";
+		s2 = "";
 	while (s1[i])
 		i++;
 	while (s2[j])
