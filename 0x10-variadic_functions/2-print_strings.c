@@ -26,5 +26,5 @@ void print_strings(const char *separator, const unsigned int n, ...)
 			printf("%s%s", separator, s);
 	}
 	va_end(list);
-	print("\n");
+	printf("\n");
 }
