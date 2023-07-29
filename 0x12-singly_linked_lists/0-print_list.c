@@ -15,7 +15,8 @@ size_t print_list(const list_t *h)
 
 	while (runner != NULL)
 	{
-		printf("[%d]%s\n", runner->len, runner->str != NULL ? runner ->str : "(nil)");
+		printf("[%d]%s\n", runner->len,
+				runner->str != NULL ? runner->str : "(nil)");
 		runner = runner->next;
 		log_nodes++;
 	}
