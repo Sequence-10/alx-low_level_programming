@@ -2,23 +2,23 @@
 #include <stdio.h>
 
 /**
- * print_list - responsible for printing the linked list
- * @h: that's the linked list
+ * print_list - print elements of linkedlist
+ * @h: linked list
  *
- * Return: the exact nodes
+ * Return: number of nodes
  */
 
 size_t print_list(const list_t *h)
 {
-	size_t log_nodes = 0;
-	const list_t *runner = h;
+	size_t nbr_nodes = 0;
+	const list_t *current = h;
 
-	while (runner != NULL)
+	while (current != NULL)
 	{
-		printf("[%d]%s\n", runner->len,
-				runner->str != NULL ? runner->str : "(nil)");
-		runner = runner->next;
-		log_nodes++;
+		printf("[%d] %s\n", current->len,
+		current->str != NULL ? current->str : "(nil)");
+		current = current->next;
+		nbr_nodes++;
 	}
-	return (log_nodes);
+	return (nbr_nodes);
 }
