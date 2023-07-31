@@ -3,7 +3,10 @@
  * *_calloc - validate the process
  * @nmemb: container for the first input
  * @size: variable handler
- * return: success
+ *
+ * Description: This project deal with mallo free
+ *
+ * Return: success
  */
 
 void *_calloc(unsigned int nmemb, unsigned int size)
@@ -13,6 +16,7 @@ void *_calloc(unsigned int nmemb, unsigned int size)
 
 	if (nmemb == 0 || size == 0)
 		return (NULL);
+
 	j = nmemb * size;
 	ptr = malloc(j);
 
