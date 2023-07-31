@@ -16,11 +16,11 @@ struct dog
 };
 
 /**
- * struct dog_t - typedef for struct dog
+ * struct dog dog_t - typedef for struct dog
  * Return: success
  */
 
-typedef struct dog_t
+typedef struct dog dog_t
 {
 	;
 }
