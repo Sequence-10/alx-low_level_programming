@@ -1,9 +1,12 @@
 #include <unistd.h>
 #include "main.h"
-int main(int argc, char *argv[]);
-void _puts(char *str);
-void print_num(unsigned long int n);
 
+/**
+ * main - output main code
+ * @argc: hold value one
+ * @argv: hold the main
+ * Return: success
+ */
 int main(int argc, char *argv[])
 {
 	unsigned long int i, j, num, multiplier = 1;
@@ -36,16 +39,26 @@ int main(int argc, char *argv[])
 	_putchar('\n');
 	return (0);
 }
-int _putchar(char c)
-{
-	return (write(1, &c, 1));
-}
+
+/**
+ * _puts - output that exact value
+ * @str: direct all of them
+ * Return: success
+ */
+
 void _puts(char *str)
 {
 	while (*str)
 		_putchar(*str++);
 	_putchar('\n');
 }
+
+/**
+ * print_num - take control of the rest
+ * @n: finish the job
+ * Return: success
+ */
+
 void print_num(unsigned long int n)
 {
 	if (n / 10)
