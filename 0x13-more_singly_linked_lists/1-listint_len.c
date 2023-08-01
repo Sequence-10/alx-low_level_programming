@@ -15,8 +15,8 @@ size_t listint_len(const listint_t *h)
 
 	while (runner != NULL)
 	{
-		runner = runner->nest;
-		nbr_member++
+		runner = runner->next;
+		nbr_member++;
 	}
 	return (nbr_member);
 }
