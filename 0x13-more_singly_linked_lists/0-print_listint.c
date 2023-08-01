@@ -8,7 +8,6 @@
  * Return: success
  *
  * Description: singly linked list node structure
- * 
  */
 
 size_t print_listint(const listint_t *h)
