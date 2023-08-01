@@ -18,7 +18,7 @@ int pop_listint(listint_t **head)
 		return (0);
 
 	runner = *head;
-	if (runner = NULL)
+	if (runner == NULL)
 		return (0);
 
 	oscar = runner->n;
