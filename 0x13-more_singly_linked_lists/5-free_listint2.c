@@ -11,7 +11,7 @@
 
 void free_listint2(listint_t **head)
 {
-	listint *runner;
+	listint_t *runner;
 
 	if (head == NULL)
 		return;
