@@ -6,7 +6,6 @@
  * free_listint - increment the new node to the begiining of the list
  * @head: bariable one
  *
- * Return: success
  */
 
 void free_listint(listint_t *head)
@@ -16,7 +15,7 @@ void free_listint(listint_t *head)
 
 	runner = head;
 
-	while (runer != NULL)
+	while (runner != NULL)
 	{
 		next = runner->next;
 		free(runner);
