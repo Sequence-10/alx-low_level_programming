@@ -3,7 +3,7 @@
 #include <string.h>
 
 /**
- * add_nodeint_end - increment the new node to the begiining of the list
+ * free_listint - increment the new node to the begiining of the list
  * @head: bariable one
  *
  * Return: success
