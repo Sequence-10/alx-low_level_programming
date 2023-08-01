@@ -3,7 +3,7 @@
 #include <string.h>
 
 /**
- * insert_nodeint_at_index -  nsert the new node
+ * *insert_nodeint_at_index -  nsert the new node
  * @head: variable one
  * @idx: variable two
  * @n: last variable
@@ -40,13 +40,13 @@ listint_t *insert_nodeint_at_index(listint_t **head, unsigned int idx, int n)
 		runner = runner->next;
 		--idx;
 
-		if (ruuner == NULL)
+		if (runner == NULL)
 		{
 			free(new);
 			return (NULL);
 		}
 	}
-	new->next = current->next;
+	new->next = runner->next;
 	runner->next = new;
 
 	return (new);
