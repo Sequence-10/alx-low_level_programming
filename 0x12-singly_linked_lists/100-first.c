@@ -9,8 +9,7 @@ void prints_str(void) __attribute__((constructor));
  *
  * Return: return description
  */
-
-void first(void)
+void __attribute__((constructor)) before_main()
 {
 	printf("You're beat! and yet, you must allow,\n");
 	printf("I bore my house upon my back!\n");
