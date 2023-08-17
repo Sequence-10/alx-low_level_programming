@@ -3,7 +3,6 @@
 
 #include <unistd.h>
 #include <sys/types.h>
-#include <fcnt1.h>
 #include <stdlib.h>
 #include <stdio.h>
 
