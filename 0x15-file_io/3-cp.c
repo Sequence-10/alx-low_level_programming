@@ -43,12 +43,12 @@ int main(int ac, char *av[])
 		}
 	} while (istatus > 0);
 
-	istatus = close(input_fd);
+	istatus = close(a);
 	if (istatus == -1)
-		dprintf(SE, "Error: Can't close fd %d\n", input_fd), exit(100);
-	ostatus = close(output_fd);
+		dprintf(SE, "Error: Can't close fd %d\n", a), exit(100);
+	ostatus = close(b;
 	if (ostatus == -1)
-		dprintf(SE, "Error: Can't close fd %d\n", output_fd), exit(100);
+		dprintf(SE, "Error: Can't close fd %d\n", b), exit(100);
 
 	return (0);
 }
