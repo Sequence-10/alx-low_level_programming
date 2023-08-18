@@ -35,19 +35,19 @@ int main(int ac, char *av[])
 			exit(98);
 		}
 
-		if (istatus > 0)
+		if (c > 0)
 		{
-			ostatus = write(output_fd, buf, (ssize_t) istatus);
-			if (ostatus == -1)
+			d = write(b, buf, (ssize_t) c);
+			if (d == -1)
 				dprintf(SE, "Error: Can't write to %s\n", av[2]), exit(99);
 		}
-	} while (istatus > 0);
+	} while (c > 0);
 
-	istatus = close(a);
-	if (istatus == -1)
+	c = close(a);
+	if (c == -1)
 		dprintf(SE, "Error: Can't close fd %d\n", a), exit(100);
-	ostatus = close(b;
-	if (ostatus == -1)
+	d = close(b);
+	if (d == -1)
 		dprintf(SE, "Error: Can't close fd %d\n", b), exit(100);
 
 	return (0);
