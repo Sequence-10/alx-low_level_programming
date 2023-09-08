@@ -1,68 +1,91 @@
 #include "main.h"
-
-void print_IO_stat(int stat, int fd, char *filename, char mode);
 /**
- * main - a function that copies the content of one file to another
- * @argc: control the process
- * @argv: serve as a backup
- * Return: 1 on success, exit otherwise
+ * program_not_closing - A function to take care of close errors
+ * @code_source: take care of the source code
+ * @code_destination: take care of the destination code
+ * Return: void
  */
 
-int main(int argc, char *argv[])
+void program_not_closing(int code_source, int code_destination)
 {
-	int i, j, val_q = 1024, wrote, close_i, close_j;
-	unsigned int mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
-	char buffer[1024];
+	int code;
 
-	if (argc != 3)
+	code = close(code_source);
+	if (code == FILE_ERROR)
 	{
-		dprintf(STDERR_FILENO, "%s", "Usage: cp file_from file_to\n");
-		exit(97);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n",
+				code_source);
+		exit(100);
 	}
-
-	i = open(argv[1], O_RDONLY);
-	print_IO_stat(i, -1, argv[1], '0');
-	j = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, mode);
-	print_IO_stat(j, -1, argv[2], 'W');
-	while (val_q == 1024)
+	code = close(code_destination);
+	if (code == FILE_ERROR)
 	{
-		val_q = read(i, buffer, sizeof(buffer));
-		if (val_q == -1)
-			print_IO_stat(-1, -1, argv[1], '0');
-		wrote = write(j, buffer, val_q);
-		if (wrote == -1)
-			print_IO_stat(-1, -1, argv[2], 'W');
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n",
+				code_destination);
+		exit(100);
 	}
-	close_i = close(i);
-	print_IO_stat(close_i, i, NULL, 'C');
-	close_j = close(j);
-	print_IO_stat(close_j, j, NULL, 'C');
-	return (0);
 }
 
 /**
- * print_IO_stat - A function that checks if a file can be opened or closed
- * @stat: the  descriptor of the file
- * @filename: the name of the file
- * @mode: closing or opening
- * @fd: file descriptor
- * Return: nothing
+ * program_checking_for_errors - A function to check for errors
+ * @code_source: take care of the source code
+ * @code_destination: take care of the destination code
+ * @argument_values: handle the arguments
+ * Return: void
  */
-void print_IO_stat(int stat, int fd, char *filename, char mode)
+
+void program_checking_for_errors(int code_source, int code_destination,
+		char *argument_values[])
 {
-	if (mode == 'C' && stat == -1)
+	if (code_source == FILE_ERROR)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
-		exit(100);
-	}
-	else if (mode == '0' && stat == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n, filename");
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n",
+				argument_values[1]);
 		exit(98);
 	}
-	else if (mode == 'W' && stat == -1)
+	if (code_destination == FILE_ERROR)
 	{
-		dprint(STDERR_FILENO, "Error: Can't write to %s\n", filename)
-			exit(99);
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n",
+				argument_values[2]);
+		exit(99;
 	}
+}
+
+/**
+ * main - A program that copies the content of a file to another file.
+ * @argument_count: dealing with the number of arguments.
+ * @argument_values: dealing with the arguments array.
+ * Return: 0 for sucess anything else is an error
+ */
+
+int main(int argument_count, char *argument_values[])
+{
+	int code_source, code_destination;
+	char file_buffer[1024];
+	ssize_t charac_recorded, charac_received;
+
+	if (argument_count != 3)
+	{
+		dprintf(STDERR_FILENO, "%s\n",
+				"Usage: cp file_from file_to");
+		exit(97);
+	}
+	code_source = open(argument_values[1], O_RDONLY);
+	code_destination = open(argument_values[2], O_CREAT | O_WRONLY
+			| O_TRUNC | O_APPEND, 0664);
+	error_handler(code_source, code_destination, argument_values);
+	charac_recorded = 1024;
+	while (charac_recorded == 1024)
+	{
+		charac_recorded = read(code_source,
+				file_buffer, 1024);
+		if (charac_recorded == FILE_ERROR)
+			error_handler(FILE_ERROR, 0, argument_values);
+		charac_received = write(code_destination,
+				file_buffer, charac_recorded);
+		if (charac_received == FILE_ERROR)
+			error_handler(0, FILE_ERROR, argument_values);
+	}
+	close_handler(code_source, code_destination);
+	return (0);
 }
