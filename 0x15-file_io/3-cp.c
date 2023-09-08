@@ -47,7 +47,7 @@ void program_checking_for_errors(int code_source, int code_destination,
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n",
 				argument_values[2]);
-		exit(99;
+		exit(99);
 	}
 }
 
@@ -73,19 +73,19 @@ int main(int argument_count, char *argument_values[])
 	code_source = open(argument_values[1], O_RDONLY);
 	code_destination = open(argument_values[2], O_CREAT | O_WRONLY
 			| O_TRUNC | O_APPEND, 0664);
-	error_handler(code_source, code_destination, argument_values);
+	program_checking_for_errors(code_source, code_destination, argument_values);
 	charac_recorded = 1024;
 	while (charac_recorded == 1024)
 	{
 		charac_recorded = read(code_source,
 				file_buffer, 1024);
 		if (charac_recorded == FILE_ERROR)
-			error_handler(FILE_ERROR, 0, argument_values);
+			program_checking_for_errors(FILE_ERROR, 0, argument_values);
 		charac_received = write(code_destination,
 				file_buffer, charac_recorded);
 		if (charac_received == FILE_ERROR)
-			error_handler(0, FILE_ERROR, argument_values);
+			program_checking_for_errors(0, FILE_ERROR, argument_values);
 	}
-	close_handler(code_source, code_destination);
+	program_not_closing(code_source, code_destination);
 	return (0);
 }
