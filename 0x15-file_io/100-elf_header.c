@@ -1,60 +1,41 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <elf.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-void check_elf(int elf, unsigned char *e_ident);
-void display_class(unsigned char *e_ident);
-void display_data(unsigned long int e_entry, unsigned char *e_ident);
-void display_version(unsigned int e_type, unsigned char *e_ident);
-void display_osabi(unsigned char *e_ident);
+#include "main.h"
 
 /**
- * check_elf - Checks if a file is an ELF file.
- * @e_ident: controling all the unseen process of the program.
- * @elf: The file descriptor of the ELF file.
+ * print_magic_number - Prints the ELF magic number.
  *
- * Description: If the file is not an ELF file - exit code 98.
+ * Description: This function takes a pointer to the e_ident
+ * field of the ELF header as input, and prints the magic number
+ * in hexadecimal format.
+ *
+ * @e_ident: Pointer to the ELF header e_ident field.
+ *
+ * Return: Void
  */
-void check_elf(int elf, unsigned char *e_ident)
+void print_magic_number(unsigned char *e_ident)
 {
-	int index;
+	int i;
 
-	for (index = 0; index < 4; index++)
-	{
-		if (e_ident[index] != 127 &&
-				e_ident[index] != 'E' &&
-				e_ident[index] != 'L' &&
-				e_ident[index] != 'F')
-		{
-			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
-			exit(98);
-		}
-	}
-
-	printf("  ABI Version:                       %d\n",
-			e_ident[EI_ABIVERSION]);
-
-	if (close(elf) == -1)
-	{
-		dprintf(STDERR_FILENO,
-				"Error: Can't close fd %d\n", elf);
-		exit(98);
-	}
+	printf("ELF Header:\n");
+	printf("  Magic:   ");
+	for (i = 0; i < EI_NIDENT; i++)
+		printf("%02x%c", e_ident[i],
+				i == EI_NIDENT - 1 ? '\n' : ' ');
 }
 
-
 /**
- * display_class - Prints the class of an ELF header.
- * @e_ident: controling all the unseen process of the program.
+ * print_class - Prints the ELF header class.
+ *
+ * Description: This function takes a pointer to the e_ident
+ * field of the ELF header as input, and prints the class of
+ * the ELF file.
+ *
+ * @e_ident: Pointer to the ELF header e_ident field.
+ *
+ * Return: void
  */
-void display_class(unsigned char *e_ident)
+void print_class(unsigned char *e_ident)
 {
 	printf("  Class:                             ");
-
 	switch (e_ident[EI_CLASS])
 	{
 		case ELFCLASSNONE:
@@ -68,75 +49,147 @@ void display_class(unsigned char *e_ident)
 			break;
 		default:
 			printf("<unknown: %x>\n", e_ident[EI_CLASS]);
+			break;
+	}
+
+	if (e_ident[0] != 127 &&
+			e_ident[1] != 'E' &&
+			e_ident[2] != 'L' &&
+			e_ident[3] != 'F')
+	{
+		fprintf(stderr, "Error: Invalid ELF file\n");
+		exit(98);
 	}
 }
 
 /**
- * display_data - Prints the data of an ELF header.
- * @e_ident: controling all the unseen process of the program.
- * @e_entry: The address of the ELF entry point.
+ * print_data - prints the encoding of the data
+ *
+ * @e: pointer to the ELF header struct
+ *
+ * Return: void
  */
-void display_data(unsigned long int e_entry, unsigned char *e_ident)
+void print_data(Elf64_Ehdr *e)
 {
 	printf("  Data:                              ");
-
-	switch (e_ident[EI_DATA])
+	switch (e->e_ident[EI_DATA])
 	{
-		case ELFDATANONE:
-			printf("none\n");
-			break;
 		case ELFDATA2LSB:
 			printf("2's complement, little endian\n");
 			break;
 		case ELFDATA2MSB:
 			printf("2's complement, big endian\n");
 			break;
+		case ELFDATANONE:
+			printf("none\n");
+			break;
 		default:
-			printf("<unknown: %x>\n", e_ident[EI_CLASS]);
+			printf("<unknown: %x>\n", e->e_ident[EI_DATA]);
+			break;
 	}
+}
 
-	printf("  Entry point address:               ");
 
-	if (e_ident[EI_DATA] == ELFDATA2MSB)
-	{
-		e_entry = ((e_entry << 8) & 0xFF00FF00) |
-			((e_entry >> 8) & 0xFF00FF);
-		e_entry = (e_entry << 16) | (e_entry >> 16);
-	}
-
-	if (e_ident[EI_CLASS] == ELFCLASS32)
-		printf("%#x\n", (unsigned int)e_entry);
-
+/**
+ * print_version - prints the ELF version
+ *
+ * @e: pointer to the ELF header struct
+ *
+ * Return: void
+ */
+void print_version(Elf64_Ehdr *e)
+{
+	printf("  Version:                           %d",
+			e->e_version);
+	if (e->e_version == EV_CURRENT)
+		printf(" (current)\n");
 	else
-		printf("%#lx\n", e_entry);
-
+		printf("\n");
 }
 
 /**
- * display_version - Prints the version of an ELF header.
- * @e_ident: controling all the unseen process of the program.
- * @e_type: controling all the unseen process of the program.
+ * print_osabi - prints the ELF OS/ABI
+ *
+ * @e: pointer to the ELF header struct
+ *
+ * Return: void
  */
-void display_version(unsigned int e_type, unsigned char *e_ident)
+void print_osabi(Elf64_Ehdr *e)
 {
-	printf("  Version:                           %d",
-			e_ident[EI_VERSION]);
+	char *osabi_str;
 
-	switch (e_ident[EI_VERSION])
+	switch (e->e_ident[EI_OSABI])
 	{
-		case EV_CURRENT:
-			printf(" (current)\n");
+		case ELFOSABI_SYSV:
+			osabi_str = "UNIX - System V";
+			break;
+		case ELFOSABI_HPUX:
+			osabi_str = "UNIX - HP-UX";
+			break;
+		case ELFOSABI_NETBSD:
+			osabi_str = "UNIX - NetBSD";
+			break;
+		case ELFOSABI_LINUX:
+			osabi_str = "UNIX - Linux";
+			break;
+		case ELFOSABI_SOLARIS:
+			osabi_str = "UNIX - Solaris";
+			break;
+		case ELFOSABI_IRIX:
+			osabi_str = "UNIX - IRIX";
+			break;
+		case ELFOSABI_FREEBSD:
+			osabi_str = "UNIX - FreeBSD";
+			break;
+		case ELFOSABI_TRU64:
+			osabi_str = "UNIX - TRU64";
+			break;
+		case ELFOSABI_ARM:
+			osabi_str = "ARM";
+			break;
+		case ELFOSABI_STANDALONE:
+			osabi_str = "Standalone application";
 			break;
 		default:
-			printf("\n");
+			printf("<unknown: %x>\n", e->e_ident[EI_OSABI]);
 			break;
 	}
+	printf("  OS/ABI:                            %s\n",
+			osabi_str);
+}
 
-	if (e_ident[EI_DATA] == ELFDATA2MSB)
-		e_type >>= 8;
+/**
+ * print_abiversion - prints the ABI version
+ *
+ * @file: the ELF file
+ *
+ * Return: void
+ */
+void print_abiversion(int file)
+{
+	unsigned char buffer[BUFFER_SIZE];
+	Elf32_Ehdr *elf_header = (Elf32_Ehdr *) buffer;
 
+	lseek(file, 0, SEEK_SET);
+	if (read(file, elf_header, sizeof(*elf_header)) == -1)
+	{
+		fprintf(stderr, "read error\n");
+		exit(98);
+	}
+
+	printf("  ABI Version:                       %d\n",
+			elf_header->e_ident[EI_ABIVERSION]);
+}
+
+/**
+ * print_type - prints ELF file type
+ * @e_type: ELF file type
+ *
+ * Return: void
+ */
+void print_type(uint16_t e_type)
+{
 	printf("  Type:                              ");
-
 	switch (e_type)
 	{
 		case ET_NONE:
@@ -156,101 +209,82 @@ void display_version(unsigned int e_type, unsigned char *e_ident)
 			break;
 		default:
 			printf("<unknown: %x>\n", e_type);
+			break;
 	}
 }
 
 /**
- * display_osabi - Prints the OS/ABI of an ELF header.
- * @e_ident: controling all the unseen process of the program.
+ * print_entry - Prints the entry point address of the ELF header
+ *
+ * @elf_header: A pointer to the ELF header
+ *
+ * Return: void
  */
-void display_osabi(unsigned char *e_ident)
+void print_entry(void *elf_header)
 {
-	printf("  OS/ABI:                            ");
+	Elf32_Ehdr *header_32 = (Elf32_Ehdr *)elf_header;
+	Elf64_Ehdr *header_64 = (Elf64_Ehdr *)elf_header;
 
-	switch (e_ident[EI_OSABI])
-	{
-		case ELFOSABI_NONE:
-			printf("UNIX - System V\n");
-			break;
-		case ELFOSABI_HPUX:
-			printf("UNIX - HP-UX\n");
-			break;
-		case ELFOSABI_NETBSD:
-			printf("UNIX - NetBSD\n");
-			break;
-		case ELFOSABI_LINUX:
-			printf("UNIX - Linux\n");
-			break;
-		case ELFOSABI_SOLARIS:
-			printf("UNIX - Solaris\n");
-			break;
-		case ELFOSABI_IRIX:
-			printf("UNIX - IRIX\n");
-			break;
-		case ELFOSABI_FREEBSD:
-			printf("UNIX - FreeBSD\n");
-			break;
-		case ELFOSABI_TRU64:
-			printf("UNIX - TRU64\n");
-			break;
-		case ELFOSABI_ARM:
-			printf("ARM\n");
-			break;
-		case ELFOSABI_STANDALONE:
-			printf("Standalone App\n");
-			break;
-		default:
-			printf("<unknown: %x>\n", e_ident[EI_OSABI]);
-	}
+	printf("  Entry point address:               0x");
+
+	if (header_32->e_ident[EI_CLASS] == ELFCLASS32)
+		printf("%x\n", (unsigned int)header_32->e_entry);
+	else if (header_32->e_ident[EI_CLASS] == ELFCLASS64)
+		printf("%lx\n", (unsigned long)header_64->e_entry);
 }
 
 /**
- * main - Displays the information contained in the
- *        ELF header at the start of an ELF file.
- * @argc: The number of arguments supplied to the program.
- * @argv: An array of pointers to the arguments.
+ * print_all - prints all sections
  *
- * Return: 0 on success.
+ * @ehdr: elf header
+ * @fd: file descriptor
  *
- * Description: If the file is not an ELF File or
- *              the function fails - exit code 98.
+ * Returns: void
  */
-int main(int _attribute((unused_)) argc, char *argv[])
+void print_all(Elf64_Ehdr *ehdr, int fd)
 {
-	Elf64_Ehdr *header;
-	int o, r;
+	print_magic_number(ehdr->e_ident);
+	print_class(ehdr->e_ident);
+	print_data(ehdr);
+	print_version(ehdr);
+	print_osabi(ehdr);
+	print_abiversion(fd);
+	print_type(ehdr->e_type);
+	print_entry(ehdr);
+}
 
-	o = open(argv[1], O_RDONLY);
-	if (o == -1)
+/**
+ * main - prints the ELF headers of a given file
+ *
+ * @argc: the number of arguments passed to the program
+ * @argv: an array of strings containing the arguments
+ *
+ * Return: On success, returns 0. On failure, returns an error code.
+ */
+int main(int argc, char *argv[])
+{
+	int fd;
+	Elf64_Ehdr ehdr;
+
+	if (argc != 2)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
 		exit(98);
 	}
-	header = malloc(sizeof(Elf64_Ehdr));
-	if (header == NULL)
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
 	{
-		close_elf(o);
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		fprintf(stderr, "Error: File %s failed to open\n", argv[1]);
 		exit(98);
 	}
-	r = read(o, header, sizeof(Elf64_Ehdr));
-	if (r == -1)
+	if (read(fd, &ehdr, sizeof(ehdr)) != sizeof(ehdr))
 	{
-		free(header);
-		close_elf(o);
-		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
+		fprintf(stderr, "Error: Failed to read ELF header\n");
+		close(fd);
 		exit(98);
 	}
-
-	check_elf(header->e_ident);
-	printf("ELF Header:\n");
-	display_class(header->e_ident);
-	display_data(header->e_ident, header->e_entry);
-	display_version(header->e_ident, header->e_type);
-	display_osabi(header->e_ident);
-
-
-	free(header);
-	close_elf(o);
+	iself(ehdr.e_ident);
+	print_all(&ehdr, fd);
+	close(fd);
 	return (0);
 }
