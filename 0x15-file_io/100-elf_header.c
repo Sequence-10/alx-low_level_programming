@@ -167,7 +167,7 @@ void print_osabi(Elf64_Ehdr *e)
  */
 void print_abiversion(int file)
 {
-	unsigned char buffer[BUFFER_SIZE];
+	unsigned char buffer[1024];
 	Elf32_Ehdr *elf_header = (Elf32_Ehdr *) buffer;
 
 	lseek(file, 0, SEEK_SET);
@@ -283,7 +283,6 @@ int main(int argc, char *argv[])
 		close(fd);
 		exit(98);
 	}
-	iself(ehdr.e_ident);
 	print_all(&ehdr, fd);
 	close(fd);
 	return (0);
